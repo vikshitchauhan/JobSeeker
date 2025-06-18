@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login/Register Page -->
+    <div id="auth-page" class="auth-container">
+        <div class="auth-wrapper">
+            <!-- Left side - Hero -->
+            <div class="auth-hero">
+                <div class="hero-content">
+                    <div class="hero-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h1>Job Application Tracker</h1>
+                    <p>Manage your job applications efficiently and never miss an opportunity</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-briefcase"></i>
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Applications</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Companies</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-chart-line"></i>
+                            <div class="stat-number">85%</div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right side - Auth Form -->
+            <div class="auth-form-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h2 id="auth-title">Welcome Back</h2>
+                        <p id="auth-subtitle">Sign in to your account to continue</p>
+                    </div>
+
+                    <div class="auth-tabs">
+                        <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                        <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+                    </div>
+
+                    <form id="auth-form" class="auth-form">
+                        <div id="name-field" class="form-group" style="display: none;">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe">
+                            <span class="error-message" id="name-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                            <span class="error-message" id="email-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="password-input">
+                                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword()">
+                                    <i class="fas fa-eye" id="password-icon"></i>
+                                </button>
+                            </div>
+                            <span class="error-message" id="password-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Account Type</label>
+                            <select id="role" name="role">
+                                <option value="applicant">Applicant</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="auth-btn" id="auth-submit-btn">
+                            <span id="auth-btn-text">Sign In</span>
+                            <i class="fas fa-spinner fa-spin" id="auth-loading" style="display: none;"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="dashboard-container" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <i class="fas fa-briefcase"></i>
+                        <h1>Job Tracker</h1>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Notifications -->
+                    <div class="notification-bell" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count" id="notification-count">0</span>
+                    </div>
+
+                    <!-- User Menu -->
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <i class="fas fa-user"></i>
+                            <span id="user-name">John Doe</span>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Stats Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-title">Total Applications</p>
+                            <p class="stat-number" id="total-applications">0</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-title">Interviews</p>
+                            <p class="stat-number" id="interview-count">0</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-title">Offers</p>
+                            <p class="stat-number" id="offer-count">0</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <p class="stat-title">Success Rate</p>
+                            <p class="stat-number" id="success-rate">0%</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="filters-container">
+                <div class="filters-content">
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="Search companies or roles..." onkeyup="filterJobs()">
+                        </div>
+
+                        <div class="status-filter">
+                            <i class="fas fa-filter"></i>
+                            <select id="status-filter" onchange="filterJobs()">
+                                <option value="All">All Status</option>
+                                <option value="Applied">Applied</option>
+                                <option value="Interview">Interview</option>
+                                <option value="Offer">Offer</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Accepted">Accepted</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="add-job-btn" onclick="showAddJobModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Application
+                    </button>
+                </div>
+            </div>
+
+            <!-- Job Applications List -->
+            <div class="jobs-container">
+                <div id="jobs-list" class="jobs-list">
+                    <!-- Jobs will be dynamically loaded here -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>No applications found</h3>
+                    <p>Start by adding your first job application</p>
+                    <button class="add-job-btn" onclick="showAddJobModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Your First Application
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-page" class="admin-container" style="display: none;">
+        <!-- Admin Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <i class="fas fa-users-cog"></i>
+                        <h1>Admin Dashboard</h1>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <div class="admin-badge">Admin</div>
+                            <span id="admin-name">Admin User</span>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Admin Navigation -->
+        <nav class="admin-nav">
+            <div class="nav-content">
+                <button class="nav-btn active" onclick="switchAdminTab('overview')">Overview</button>
+                <button class="nav-btn" onclick="switchAdminTab('users')">Users (<span id="users-count">0</span>)</button>
+                <button class="nav-btn" onclick="switchAdminTab('applications')">Applications (<span id="admin-apps-count">0</span>)</button>
+            </div>
+        </nav>
+
+        <!-- Admin Content -->
+        <main class="admin-main">
+            <!-- Overview Tab -->
+            <div id="admin-overview" class="admin-tab-content">
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <p class="stat-title">Total Users</p>
+                                <p class="stat-number" id="admin-total-users">0</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <p class="stat-title">Total Applications</p>
+                                <p class="stat-number" id="admin-total-apps">0</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <p class="stat-title">Success Rate</p>
+                                <p class="stat-number" id="admin-success-rate">0%</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <p class="stat-title">Active This Week</p>
+                                <p class="stat-number" id="admin-active-users">0</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-week"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3>Recent Applications</h3>
+                    <div id="recent-applications" class="activity-list">
+                        <!-- Recent applications will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="admin-users" class="admin-tab-content" style="display: none;">
+                <div class="tab-header">
+                    <h2>User Management</h2>
+                    <button class="export-btn" onclick="exportData()">
+                        <i class="fas fa-download"></i>
+                        Export Data
+                    </button>
+                </div>
+
+                <div id="users-list" class="users-list">
+                    <!-- Users will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Applications Tab -->
+            <div id="admin-applications" class="admin-tab-content" style="display: none;">
+                <div class="tab-header">
+                    <h2>All Applications</h2>
+                    <button class="export-btn" onclick="exportData()">
+                        <i class="fas fa-download"></i>
+                        Export Data
+                    </button>
+                </div>
+
+                <!-- Admin Filters -->
+                <div class="filters-container">
+                    <div class="filters-content">
+                        <div class="search-filter">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="admin-search-input" placeholder="Search applications..." onkeyup="filterAdminJobs()">
+                            </div>
+
+                            <div class="status-filter">
+                                <i class="fas fa-filter"></i>
+                                <select id="admin-status-filter" onchange="filterAdminJobs()">
+                                    <option value="All">All Status</option>
+                                    <option value="Applied">Applied</option>
+                                    <option value="Interview">Interview</option>
+                                    <option value="Offer">Offer</option>
+                                    <option value="Rejected">Rejected</option>
+                                    <option value="Accepted">Accepted</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-jobs-list" class="jobs-list">
+                    <!-- All applications will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Job Modal -->
+    <div id="job-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Job Application</h2>
+                <button class="close-btn" onclick="closeJobModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="job-form" class="job-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="job-company">Company Name *</label>
+                        <input type="text" id="job-company" name="company" placeholder="e.g., Google, Microsoft" required>
+                        <span class="error-message" id="company-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job-role">Job Role *</label>
+                        <input type="text" id="job-role" name="role" placeholder="e.g., Software Engineer" required>
+                        <span class="error-message" id="role-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="job-status">Application Status</label>
+                        <select id="job-status" name="status">
+                            <option value="Applied">Applied</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Offer">Offer</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Accepted">Accepted</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job-date">Applied Date *</label>
+                        <input type="date" id="job-date" name="appliedDate" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="job-salary">Expected Salary</label>
+                        <input type="text" id="job-salary" name="salary" placeholder="e.g., $120,000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job-location">Location</label>
+                        <input type="text" id="job-location" name="location" placeholder="e.g., San Francisco, CA">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="job-url">Job Posting URL</label>
+                    <input type="url" id="job-url" name="jobUrl" placeholder="https://company.com/careers/job-id">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="job-contact">Contact Person</label>
+                        <input type="text" id="job-contact" name="contactPerson" placeholder="e.g., John Smith, HR Manager">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="job-contact-email">Contact Email</label>
+                        <input type="email" id="job-contact-email" name="contactEmail" placeholder="contact@company.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="job-notes">Notes</label>
+                    <textarea id="job-notes" name="notes" rows="4" placeholder="Add any additional notes about this application..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeJobModal()">Cancel</button>
+                    <button type="submit" class="save-btn">
+                        <i class="fas fa-save"></i>
+                        <span id="save-btn-text">Save Application</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div id="notifications-panel" class="notifications-panel" style="display: none;">
+        <div class="notifications-header">
+            <h3>Notifications</h3>
+            <button onclick="clearNotifications()">Clear All</button>
+        </div>
+        <div id="notifications-list" class="notifications-list">
+            <!-- Notifications will be loaded here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
